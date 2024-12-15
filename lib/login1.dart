@@ -1,18 +1,17 @@
-import 'package:api_testing_app/login1.dart';
 import 'package:api_testing_app/util/custom_dropdown.dart';
 import 'package:api_testing_app/util/custom_elevatedbutton.dart';
 import 'package:api_testing_app/util/custom_textformfield.dart';
 import 'package:api_testing_app/util/string_const.dart';
 import 'package:flutter/material.dart';
 
-class Register1 extends StatefulWidget {
-  const Register1({super.key});
+class Login1 extends StatefulWidget {
+  const Login1({super.key});
 
   @override
-  State<Register1> createState() => _Register1State();
+  State<Login1> createState() => _Login1State();
 }
 
-class _Register1State extends State<Register1> {
+class _Login1State extends State<Login1> {
   List<String> genderList = ["Male", "Female", "Others"];
   List<String> roleList = ["Admin", "User"];
   String? gender, role;
@@ -20,8 +19,6 @@ class _Register1State extends State<Register1> {
   TextEditingController emailController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController contactController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -57,8 +54,6 @@ class _Register1State extends State<Register1> {
                       icon: visible
                           ? Icon(Icons.visibility_off)
                           : Icon(Icons.visibility))),
-              CustomTextformfield(
-                  controller: nameController, labelText: nameStr),
               CustomDropdown(
                 labelText: genderStr,
                 dropDownItemList: genderList,
@@ -72,14 +67,11 @@ class _Register1State extends State<Register1> {
                 onChanged: (value) {
                   role = value;
                 },
-              ),
-              CustomTextformfield(
-                  controller: contactController, labelText: contactStr),
-              CustomElevatedbutton(
+              ),CustomElevatedbutton(
                 child: Text(registerStr),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context)=>Login1()) ,(Route<dynamic> route) => false);
+
                   }
                 },
               )

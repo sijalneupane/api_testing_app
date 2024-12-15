@@ -5,17 +5,23 @@ class CustomTextformfield extends StatelessWidget {
   Widget? suffixIcon;
   bool? obscureText;
   TextInputType? keyboardType;
-  String? Function(String?)? validator;
-  CustomTextformfield({super.key,this.labelText,this.suffixIcon,this.obscureText,this.validator,this.keyboardType});
+  TextEditingController? controller;
+  CustomTextformfield({super.key,this.labelText,this.suffixIcon,this.obscureText,this.keyboardType,this.controller});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
+        controller: controller,
         keyboardType:keyboardType ,
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        validator: validator,
+        validator:(value) {
+          if(value!.isEmpty){
+            return "$labelText cannot be empty";
+          }
+          return null;
+        },
         obscureText:obscureText??false ,
         decoration: InputDecoration(
           labelText:labelText ,

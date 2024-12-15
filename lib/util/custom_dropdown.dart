@@ -5,11 +5,13 @@ class CustomDropdown extends StatelessWidget {
   List<String> dropDownItemList;
   Function(String?)? onChanged;
   String? labelText;
+  TextEditingController? controller;
   CustomDropdown(
       {super.key,
       required this.dropDownItemList,
       this.onChanged,
-      this.labelText});
+      this.labelText,
+      this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +24,16 @@ class CustomDropdown extends StatelessWidget {
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(5))),
           items: dropDownItemList
-              .map((e) => DropdownMenuItem(child: CustomText(data: e), value: e))
+              .map((e) => DropdownMenuItem( value: e,child: CustomText(data: e)))
               .toList(),
-          onChanged: onChanged),
+          onChanged: onChanged,
+          autovalidateMode:AutovalidateMode.onUserInteraction,
+          validator: (value) {
+          if(value==null){
+            return "$labelText cannot be empty";
+          }
+          return null;
+        }),
     );
   }
 }
