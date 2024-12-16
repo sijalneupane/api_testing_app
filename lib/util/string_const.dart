@@ -8,3 +8,5 @@ String contactStr="Contact";
 
 String registerStr="Register";
 String loginStr="Login";
+String registerMessageStr="Account successfully created";
+String registerMessageFailedStr="Account Failed to create";

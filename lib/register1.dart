@@ -2,7 +2,9 @@ import 'package:api_testing_app/login1.dart';
 import 'package:api_testing_app/util/custom_dropdown.dart';
 import 'package:api_testing_app/util/custom_elevatedbutton.dart';
 import 'package:api_testing_app/util/custom_textformfield.dart';
+import 'package:api_testing_app/util/snackbar.dart';
 import 'package:api_testing_app/util/string_const.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class Register1 extends StatefulWidget {
@@ -36,6 +38,7 @@ class _Register1State extends State<Register1> {
           child: Column(
             children: [
               CustomTextformfield(
+                keyboardType: TextInputType.emailAddress,
                 controller: emailController,
                 labelText: emailStr,
                 suffixIcon: Icon(Icons.email),
@@ -45,13 +48,14 @@ class _Register1State extends State<Register1> {
                 labelText: usernameStr,
               ),
               CustomTextformfield(
+                  keyboardType: TextInputType.visiblePassword,
                   controller: passwordController,
                   labelText: passwordStr,
                   obscureText: visible ? false : true,
                   suffixIcon: IconButton(
                       onPressed: () {
                         setState(() {
-                          visible=!visible;
+                          visible = !visible;
                         });
                       },
                       icon: visible
@@ -74,12 +78,40 @@ class _Register1State extends State<Register1> {
                 },
               ),
               CustomTextformfield(
-                  controller: contactController, labelText: contactStr),
+                  keyboardType: TextInputType.number,
+                  controller: contactController,
+                  labelText: contactStr),
               CustomElevatedbutton(
                 child: Text(registerStr),
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context)=>Login1()) ,(Route<dynamic> route) => false);
+                    var userJson = {
+                      "email": emailController.text,
+                      "username": usernameController.text,
+                      "password": passwordController.text,
+                      "name": nameController.text,
+                      "gender": gender,
+                      "role": role,
+                      "contact": contactController.text
+                    };
+                    Dio dio = Dio();
+                    try {
+                      Response response = await dio.post(
+                          "https://6a2b-2407-1400-aa0b-9848-39ee-108b-965d-7c1b.ngrok-free.app/createUser",
+                          data: userJson);
+                      if (response.statusCode == 200 ||
+                          response.statusCode == 201) {
+                        displaySnackBar(context, registerMessageStr);
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => Login1()),
+                            (Route<dynamic> route) => false);
+                      } else {
+                        displaySnackBar(context, registerMessageFailedStr);
+                      }
+                    } catch (e) {
+                      displaySnackBar(context, e.toString());
+                    }
                   }
                 },
               )

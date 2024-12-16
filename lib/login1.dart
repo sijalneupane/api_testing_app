@@ -37,10 +37,7 @@ class _Login1State extends State<Login1> {
                 labelText: emailStr,
                 suffixIcon: Icon(Icons.email),
               ),
-              CustomTextformfield(
-                controller: usernameController,
-                labelText: usernameStr,
-              ),
+            
               CustomTextformfield(
                   controller: passwordController,
                   labelText: passwordStr,
@@ -54,24 +51,12 @@ class _Login1State extends State<Login1> {
                       icon: visible
                           ? Icon(Icons.visibility_off)
                           : Icon(Icons.visibility))),
-              CustomDropdown(
-                labelText: genderStr,
-                dropDownItemList: genderList,
-                onChanged: (value) {
-                  gender = value;
-                },
-              ),
-              CustomDropdown(
-                labelText: roleStr,
-                dropDownItemList: roleList,
-                onChanged: (value) {
-                  role = value;
-                },
-              ),CustomElevatedbutton(
+           
+           CustomElevatedbutton(
                 child: Text(registerStr),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-
+   
                   }
                 },
               )
