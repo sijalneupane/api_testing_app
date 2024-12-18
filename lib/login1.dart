@@ -6,6 +6,7 @@ import 'package:api_testing_app/util/snackbar.dart';
 import 'package:api_testing_app/util/string_const.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login1 extends StatefulWidget {
   const Login1({super.key});
@@ -64,10 +65,14 @@ class _Login1State extends State<Login1> {
                     try {
                       Dio dio = Dio();
                       Response response = await dio.post(
-                          "https://5aaf-120-89-104-107.ngrok-free.app/login",
+                          "https://a186-2404-7c00-49-e958-5468-4296-9c43-d01d.ngrok-free.app/login",
                           data: loginDataJson);
                       if (response.statusCode == 200 ||
                           response.statusCode == 201) {
+                        final SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        await prefs.setString(
+                            'authToken', response.data["token"]);
                         Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(

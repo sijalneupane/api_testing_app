@@ -2,9 +2,11 @@ import 'package:api_testing_app/util/custom_dropdown.dart';
 import 'package:api_testing_app/util/custom_elevatedbutton.dart';
 import 'package:api_testing_app/util/custom_text.dart';
 import 'package:api_testing_app/util/custom_textformfield.dart';
+import 'package:api_testing_app/util/snackbar.dart';
 import 'package:api_testing_app/util/string_const.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddAssignment extends StatefulWidget {
   const AddAssignment({super.key});
@@ -14,9 +16,8 @@ class AddAssignment extends StatefulWidget {
 }
 
 class _AddAssignmentState extends State<AddAssignment> {
+  String? semester,faculty;
   TextEditingController subjectController = TextEditingController();
-  TextEditingController semesterController = TextEditingController();
-  TextEditingController facultyController = TextEditingController();
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   List<String> facultyList = ["BCA", "BIM", "CSIT"];
@@ -30,6 +31,26 @@ class _AddAssignmentState extends State<AddAssignment> {
     "Seven Semester",
     "Eight Semester"
   ];
+
+  String? token;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchToken();
+  }
+
+  Future<void> fetchToken() async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      setState(() {
+        token = prefs.getString('authToken'); // Retrieve the token
+      });
+    } on Exception catch (e) {
+      displaySnackBar(context, e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
@@ -47,13 +68,15 @@ class _AddAssignmentState extends State<AddAssignment> {
             ),
             CustomDropdown(
               dropDownItemList: facultyList,
-              labelText: facultyStr,
-              controller: facultyController,
+              labelText: facultyStr,onChanged: (value) {
+                  faculty = value;
+                },
             ),
             CustomDropdown(
               dropDownItemList: semesterList,
-              labelText: semesterStr,
-              controller: semesterController,
+              labelText: semesterStr,onChanged: (value) {
+                  semester = value;
+                },
             ),
             CustomTextformfield(
               labelText: titleStr,
@@ -67,18 +90,28 @@ class _AddAssignmentState extends State<AddAssignment> {
                 ),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    var addAssignmentJson={
-                      "subjectName":subjectController.text,
-                      "semester":semesterController.text,
-                      "faculty":facultyController.text,
-                      "title":titleController.text,
-                      "description":descriptionController.text
+                    var addAssignmentJson = {
+                      "subjectName": subjectController.text,
+                      "semester": semester,
+                      "faculty": faculty,
+                      "title": titleController.text,
+                      "description": descriptionController.text
                     };
-                    Dio dio=Dio();
+                    Dio dio = Dio();
                     try {
-                      Response response=await dio.post("");
+                      dio.options.headers['content-Type'] = 'application/json';
+                      if (token != null && token!.isNotEmpty) {
+                        dio.options.headers["Authorization"] = "Bearer $token";
+                      }
+                      Response response = await dio.post("https://a186-2404-7c00-49-e958-5468-4296-9c43-d01d.ngrok-free.app/addAssignment",data:addAssignmentJson );
+                      if (response.statusCode == 200 ||
+                          response.statusCode == 201) {
+                        displaySnackBar(context, addAssignmentMessageStr);
+                      } else {
+                        displaySnackBar(context, addAssignmentMessageFailedStr);
+                      }
                     } catch (e) {
-                      
+                      displaySnackBar(context,e.toString());
                     }
                   }
                 })

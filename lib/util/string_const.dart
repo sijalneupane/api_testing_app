@@ -17,6 +17,8 @@ String semesterStr="Semester";
 String facultyStr="Faculty";
 String titleStr="Title";
 String descriptionStr="Description";
+String addAssignmentMessageStr="Assignment added successfully";
+String addAssignmentMessageFailedStr="Failed to add assignmet";
 
 String loginMessageFailedStr="Failed to login";
 String loginMessageStr="Login Successfullyy";

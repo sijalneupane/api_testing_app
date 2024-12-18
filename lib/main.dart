@@ -21,8 +21,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: Register1()
-      // home: AddAssignment(),
-      home: Login1(),
+      home: AddAssignment(),
+      // home: Login1(),
     );
   }
 }
