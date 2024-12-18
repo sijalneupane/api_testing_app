@@ -35,12 +35,13 @@ class _AddAssignmentState extends State<AddAssignment> {
   String? token;
 
   @override
-  void initState() {
-    super.initState();
+  void initState() {   
     fetchToken();
+    super.initState();
+ 
   }
 
-  Future<void> fetchToken() async {
+  fetchToken() async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       setState(() {

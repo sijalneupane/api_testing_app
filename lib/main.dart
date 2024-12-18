@@ -1,4 +1,5 @@
 import 'package:api_testing_app/add_assignment.dart';
+import 'package:api_testing_app/get_assignment.dart';
 import 'package:api_testing_app/login1.dart';
 import 'package:api_testing_app/register1.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +22,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: Register1()
-      home: AddAssignment(),
+      // home: AddAssignment(),
       // home: Login1(),
+      home: GetAssignment(),
     );
   }
 }

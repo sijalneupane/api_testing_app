@@ -72,7 +72,7 @@ class _Login1State extends State<Login1> {
                         final SharedPreferences prefs =
                             await SharedPreferences.getInstance();
                         await prefs.setString(
-                            'authToken', response.data["token"]);
+                            "authToken", response.data["token"]);
                         Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
