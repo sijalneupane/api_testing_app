@@ -1,7 +1,10 @@
+import 'package:api_testing_app/home1.dart';
 import 'package:api_testing_app/util/custom_dropdown.dart';
 import 'package:api_testing_app/util/custom_elevatedbutton.dart';
 import 'package:api_testing_app/util/custom_textformfield.dart';
+import 'package:api_testing_app/util/snackbar.dart';
 import 'package:api_testing_app/util/string_const.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class Login1 extends StatefulWidget {
@@ -37,7 +40,6 @@ class _Login1State extends State<Login1> {
                 labelText: emailStr,
                 suffixIcon: Icon(Icons.email),
               ),
-            
               CustomTextformfield(
                   controller: passwordController,
                   labelText: passwordStr,
@@ -45,18 +47,40 @@ class _Login1State extends State<Login1> {
                   suffixIcon: IconButton(
                       onPressed: () {
                         setState(() {
-                          visible=!visible;
+                          visible = !visible;
                         });
                       },
                       icon: visible
                           ? Icon(Icons.visibility_off)
                           : Icon(Icons.visibility))),
-           
-           CustomElevatedbutton(
+              CustomElevatedbutton(
                 child: Text(registerStr),
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-   
+                    var loginDataJson = {
+                      "email": emailController.text,
+                      "password": passwordController.text
+                    };
+                    try {
+                      Dio dio = Dio();
+                      Response response = await dio.post(
+                          "https://5aaf-120-89-104-107.ngrok-free.app/login",
+                          data: loginDataJson);
+                      if (response.statusCode == 200 ||
+                          response.statusCode == 201) {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => Home1()),
+                            (Route<dynamic> route) => false);
+
+                        // String token=response.
+                      } else {
+                        displaySnackBar(context, loginMessageFailedStr);
+                      }
+                    } catch (e) {
+                      displaySnackBar(context, e.toString());
+                    }
                   }
                 },
               )

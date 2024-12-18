@@ -7,6 +7,6 @@ class CustomText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(data,style: TextStyle(color: color??const Color.fromARGB(255, 18, 15, 34),));
+    return Text(data,style: TextStyle(color: color??const Color.fromARGB(255, 47, 43, 73),));
   }
 }

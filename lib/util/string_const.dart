@@ -10,3 +10,13 @@ String registerStr="Register";
 String loginStr="Login";
 String registerMessageStr="Account successfully created";
 String registerMessageFailedStr="Account Failed to create";
+
+String addAssignmentStr="Add Assignment";
+String subjectNameStr="Subject Name";
+String semesterStr="Semester";
+String facultyStr="Faculty";
+String titleStr="Title";
+String descriptionStr="Description";
+
+String loginMessageFailedStr="Failed to login";
+String loginMessageStr="Login Successfullyy";
