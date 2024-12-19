@@ -58,7 +58,7 @@ class _AddAssignmentState extends State<AddAssignment> {
     final _formKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
-        title: CustomText(data: addAssignmentStr),
+        title: Text( addAssignmentStr),
       ),
       body: SingleChildScrollView(
         child: Form(

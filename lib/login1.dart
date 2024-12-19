@@ -59,7 +59,7 @@ class _Login1State extends State<Login1> {
                           ? Icon(Icons.visibility_off)
                           : Icon(Icons.visibility))),
               CustomElevatedbutton(
-                child: Text(registerStr),
+                child: Text(loginStr),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     var loginDataJson = {

@@ -66,10 +66,11 @@ class _GetAssignmentState extends State<GetAssignment> {
             )
           : Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircularProgressIndicator(
                     color: Colors.red,
-                  ),
+                  ),SizedBox(height: 20,),
                   Text("Loading...")
                 ],
               ),
