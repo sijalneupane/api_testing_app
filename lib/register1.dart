@@ -4,6 +4,7 @@ import 'package:api_testing_app/login1.dart';
 import 'package:api_testing_app/util/api_const.dart';
 import 'package:api_testing_app/util/custom_dropdown.dart';
 import 'package:api_testing_app/util/custom_elevatedbutton.dart';
+import 'package:api_testing_app/util/custom_inkwell.dart';
 import 'package:api_testing_app/util/custom_textformfield.dart';
 import 'package:api_testing_app/util/snackbar.dart';
 import 'package:api_testing_app/util/string_const.dart';
@@ -117,7 +118,8 @@ class _Register1State extends State<Register1> {
                     }
                   }
                 },
-              )
+              ),
+              CustomInkwell(data: alreadyRegisteredStr, builder: (p0) => Login1(),)
             ],
           ),
         )),

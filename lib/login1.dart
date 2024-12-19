@@ -1,7 +1,10 @@
+import 'package:api_testing_app/bottom_navbar1.dart';
 import 'package:api_testing_app/home1.dart';
+import 'package:api_testing_app/register1.dart';
 import 'package:api_testing_app/util/api_const.dart';
 import 'package:api_testing_app/util/custom_dropdown.dart';
 import 'package:api_testing_app/util/custom_elevatedbutton.dart';
+import 'package:api_testing_app/util/custom_inkwell.dart';
 import 'package:api_testing_app/util/custom_textformfield.dart';
 import 'package:api_testing_app/util/snackbar.dart';
 import 'package:api_testing_app/util/string_const.dart';
@@ -29,7 +32,7 @@ class _Login1State extends State<Login1> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(registerStr),
+        title: Text(loginStr),
       ),
       body: SingleChildScrollView(
         child: SafeArea(
@@ -66,7 +69,7 @@ class _Login1State extends State<Login1> {
                     try {
                       Dio dio = Dio();
                       Response response = await dio.post(
-                          ApiConst.baseUrl+ApiConst.loginApi,
+                          ApiConst.baseUrl + ApiConst.loginApi,
                           data: loginDataJson);
                       if (response.statusCode == 200 ||
                           response.statusCode == 201) {
@@ -74,10 +77,12 @@ class _Login1State extends State<Login1> {
                             await SharedPreferences.getInstance();
                         await prefs.setString(
                             "authToken", response.data["token"]);
+                        await prefs.setBool(
+                            "isLoggedIn", true);    
                         Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                                builder: (BuildContext context) => Home1()),
+                                builder: (BuildContext context) => BottomNavbar1()),
                             (Route<dynamic> route) => false);
 
                         // String token=response.
@@ -89,7 +94,8 @@ class _Login1State extends State<Login1> {
                     }
                   }
                 },
-              )
+              ),
+              CustomInkwell(data: notRegisteredStr, builder: (p0) => Register1(),)
             ],
           ),
         )),

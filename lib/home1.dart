@@ -1,4 +1,5 @@
 import 'package:api_testing_app/util/snackbar.dart';
+import 'package:api_testing_app/util/string_const.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,33 +11,17 @@ class Home1 extends StatefulWidget {
 }
 
 class _Home1State extends State<Home1> {
-  String? token;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchToken();
-  }
-
-  Future<void> fetchToken() async {
-    try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      setState(() {
-        token = prefs.getString('authToken'); // Retrieve the token
-      });
-    } on Exception catch (e) {
-      displaySnackBar(context, e.toString());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(" HOMEPAGE "),
+        title: Text(homeStr),
       ),
       body: Column(
-        children: [Text("Welcome to my homepage after login"), Text(token!)],
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(child: Text(welcomeHomeStr,style: TextStyle(fontSize: 30),textAlign: TextAlign.center,)),
+        ],
       ),
     );
   }

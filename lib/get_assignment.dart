@@ -1,4 +1,7 @@
+import 'package:api_testing_app/util/api_const.dart';
+import 'package:api_testing_app/util/custom_text.dart';
 import 'package:api_testing_app/util/snackbar.dart';
+import 'package:api_testing_app/util/string_const.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,12 +14,9 @@ class GetAssignment extends StatefulWidget {
 }
 
 class _GetAssignmentState extends State<GetAssignment> {
-  String? token;
   Response? response;
-
   @override
   void initState() {
-    fetchToken();
     getAssignment();
     super.initState();
   }
@@ -24,33 +24,74 @@ class _GetAssignmentState extends State<GetAssignment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Get Assignment"),
+        scrolledUnderElevation: 0,
+        title: Text(getAssignmentStr),
       ),
-      body: Column(
-        children: [
-          response!=null?Text(response!.data[0]["response"]):CircularProgressIndicator()
-        ],
-      ),
+      body: response != null
+          ? Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: response?.data["list"].length,
+                    itemBuilder: (context,index){
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Card(
+                          color: const Color.fromARGB(255, 201, 194, 194),
+                          child:Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    CustomText(data: response?.data["list"][index]["title"],type: "heading",),
+                                    Spacer(),
+                                    CustomText(data: response?.data["list"][index]["subjectName"],type: "heading",),
+                                  ],
+                                ),Divider(color: Colors.blue,),
+                                CustomText(data: response?.data["list"][index]["faculty"],type: "subHeading",),
+                                CustomText(data: response?.data["list"][index]["semester"],type: "subHeading",),
+                                CustomText(data: response?.data["list"][index]["description"],),
+                              ],
+                            ),
+                          ) ,
+                        ),
+                      );
+                    }),
+                )
+              ],
+            )
+          : Center(
+              child: Column(
+                children: [
+                  CircularProgressIndicator(
+                    color: Colors.red,
+                  ),
+                  Text("Loading...")
+                ],
+              ),
+            ),
     );
   }
 
   getAssignment() async {
-    String url =
-        "https://a186-2404-7c00-49-e958-5468-4296-9c43-d01d.ngrok-free.app/getAssignment";
-    if (token != null && token!.isNotEmpty) {
-      url += "?token=$token"; // Append token as a query parameter
-    }
     Dio dio = Dio();
-    response = await dio.get(url);
-  }
-  fetchToken() async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      setState(() {
-        token = prefs.getString('authToken'); // Retrieve the token
+      final String? token = prefs.getString("authToken"); // Retrieve the token
+      if (token != null && token.isNotEmpty) {
+        // url += "?token=$token"; // Append token as a query parameter
+        dio.options.headers["Authorization"] = "Bearer $token";
+      }
+      String url = ApiConst.baseUrl + ApiConst.getAssignmentApi;
+      response = await dio.get(url);
+      setState((){
+        response;
       });
-    } on Exception catch (e) {
+    } catch (e) {
       displaySnackBar(context, e.toString());
     }
   }

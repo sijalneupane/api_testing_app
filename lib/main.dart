@@ -1,4 +1,6 @@
 import 'package:api_testing_app/add_assignment.dart';
+import 'package:api_testing_app/bottom_navbar1.dart';
+import 'package:api_testing_app/check_loggedin.dart';
 import 'package:api_testing_app/get_assignment.dart';
 import 'package:api_testing_app/login1.dart';
 import 'package:api_testing_app/register1.dart';
@@ -23,8 +25,10 @@ class MyApp extends StatelessWidget {
       ),
       // home: Register1()
       // home: AddAssignment(),
-      home: Login1(),
+      // home: Login1(),
       // home: GetAssignment(),
+      // home: BottomNavbar1(),
+      home: CheckLoggedin(),
     );
   }
 }

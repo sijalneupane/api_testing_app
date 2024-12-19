@@ -60,66 +60,74 @@ class _AddAssignmentState extends State<AddAssignment> {
       appBar: AppBar(
         title: CustomText(data: addAssignmentStr),
       ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            CustomTextformfield(
-              labelText: subjectNameStr,
-              controller: subjectController,
-            ),
-            CustomDropdown(
-              dropDownItemList: facultyList,
-              labelText: facultyStr,onChanged: (value) {
-                  faculty = value;
-                },
-            ),
-            CustomDropdown(
-              dropDownItemList: semesterList,
-              labelText: semesterStr,onChanged: (value) {
-                  semester = value;
-                },
-            ),
-            CustomTextformfield(
-              labelText: titleStr,
-              controller: titleController,
-            ),
-            CustomTextformfield(
-                labelText: descriptionStr, controller: descriptionController),
-            CustomElevatedbutton(
-                child: Text(
-                  addAssignmentStr,
-                ),
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    var addAssignmentJson = {
-                      "subjectName": subjectController.text,
-                      "semester": semester,
-                      "faculty": faculty,
-                      "title": titleController.text,
-                      "description": descriptionController.text
-                    };
-                    Dio dio = Dio();
-                    try {
-                      final SharedPreferences prefs = await SharedPreferences.getInstance();
-                       token = prefs.getString('authToken');
-                      dio.options.headers['content-Type'] = 'application/json';
-                      if (token != null && token!.isNotEmpty) {
-                        dio.options.headers["Authorization"] = "Bearer $token";
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              CustomTextformfield(
+                labelText: subjectNameStr,
+                controller: subjectController,
+              ),
+              CustomDropdown(
+                dropDownItemList: facultyList,
+                labelText: facultyStr,onChanged: (value) {
+                    faculty = value;
+                  },
+              ),
+              CustomDropdown(
+                dropDownItemList: semesterList,
+                labelText: semesterStr,onChanged: (value) {
+                    semester = value;
+                  },
+              ),
+              CustomTextformfield(
+                labelText: titleStr,
+                controller: titleController,
+              ),
+              CustomTextformfield(
+                  labelText: descriptionStr, controller: descriptionController),
+              CustomElevatedbutton(
+                  child: Text(
+                    addAssignmentStr,
+                  ),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      var addAssignmentJson = {
+                        "subjectName": subjectController.text,
+                        "semester": semester,
+                        "faculty": faculty,
+                        "title": titleController.text,
+                        "description": descriptionController.text
+                      };
+                      Dio dio = Dio();
+                      try {
+                        final SharedPreferences prefs = await SharedPreferences.getInstance();
+                         token = prefs.getString("authToken");
+                        dio.options.headers['content-Type'] = 'application/json';
+                        if (token != null && token!.isNotEmpty) {
+                          dio.options.headers["Authorization"] = "Bearer $token";
+                        }
+                        Response response = await dio.post(ApiConst.baseUrl+ApiConst.addAssignmentApi,data:addAssignmentJson );
+                        if (response.statusCode == 200 ||
+                            response.statusCode == 201) {
+                              subjectController.clear();
+                              semester=null;
+                              faculty=null;
+                              titleController.clear();
+                              descriptionController.clear();
+                              _formKey.currentState!.reset();
+                          displaySnackBar(context, addAssignmentMessageStr);
+                        } else {
+                          displaySnackBar(context, addAssignmentMessageFailedStr);
+                        }
+                      } catch (e) {
+                        displaySnackBar(context,e.toString());
                       }
-                      Response response = await dio.post(ApiConst.baseUrl+ApiConst.addAsssignmentApi,data:addAssignmentJson );
-                      if (response.statusCode == 200 ||
-                          response.statusCode == 201) {
-                        displaySnackBar(context, addAssignmentMessageStr);
-                      } else {
-                        displaySnackBar(context, addAssignmentMessageFailedStr);
-                      }
-                    } catch (e) {
-                      displaySnackBar(context,e.toString());
                     }
-                  }
-                })
-          ],
+                  })
+            ],
+          ),
         ),
       ),
     );

@@ -12,7 +12,6 @@ class CustomDropdown extends StatelessWidget {
       this.onChanged,
       this.labelText,
       this.controller});
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -25,7 +24,7 @@ class CustomDropdown extends StatelessWidget {
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(5))),
           items: dropDownItemList
-              .map((e) => DropdownMenuItem( value: e,child: CustomText(data: e)))
+              .map((e) => DropdownMenuItem( value: e,child: CustomText(data: e,type: "heading",)))
               .toList(),
           onChanged: onChanged,
           autovalidateMode:AutovalidateMode.onUserInteraction,
