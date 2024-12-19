@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
       ),
       // home: Register1()
       // home: AddAssignment(),
-      // home: Login1(),
-      home: GetAssignment(),
+      home: Login1(),
+      // home: GetAssignment(),
     );
   }
 }

@@ -1,6 +1,7 @@
 //https://l.facebook.com/l.php?u=https%3A%2F%2F6a2b-2407-1400-aa0b-9848-39ee-108b-965d-7c1b.ngrok-free.app%2FcreateUser&h=AT2pVAX6aYuVyH87EIeHF7joEk8-JuW1hEaU1DCGpLEQqh_tAIfjQqXIxFECmikTFza4_YhNSbMCAWkK5_1ygxL_JbLHurZHDjYK0OXrqDc9xiEeUovxvJQ8K2WkzzgL2-rtReJfB8Lz41w&s=1
 
 import 'package:api_testing_app/login1.dart';
+import 'package:api_testing_app/util/api_const.dart';
 import 'package:api_testing_app/util/custom_dropdown.dart';
 import 'package:api_testing_app/util/custom_elevatedbutton.dart';
 import 'package:api_testing_app/util/custom_textformfield.dart';
@@ -99,7 +100,7 @@ class _Register1State extends State<Register1> {
                     Dio dio = Dio();
                     try {
                       Response response = await dio.post(
-                          "https://6a2b-2407-1400-aa0b-9848-39ee-108b-965d-7c1b.ngrok-free.app/createUser",
+                          ApiConst.baseUrl+ ApiConst.signUpApi,
                           data: userJson);
                       if (response.statusCode == 200 ||
                           response.statusCode == 201) {

@@ -1,3 +1,4 @@
+import 'package:api_testing_app/util/api_const.dart';
 import 'package:api_testing_app/util/custom_dropdown.dart';
 import 'package:api_testing_app/util/custom_elevatedbutton.dart';
 import 'package:api_testing_app/util/custom_text.dart';
@@ -34,23 +35,23 @@ class _AddAssignmentState extends State<AddAssignment> {
 
   String? token;
 
-  @override
-  void initState() {   
-    fetchToken();
-    super.initState();
+  // @override
+  // void initState() {   
+  //   fetchToken();
+  //   super.initState();
  
-  }
+  // }
 
-  fetchToken() async {
-    try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      setState(() {
-        token = prefs.getString('authToken'); // Retrieve the token
-      });
-    } on Exception catch (e) {
-      displaySnackBar(context, e.toString());
-    }
-  }
+  // fetchToken() async {
+  //   try {
+  //     final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //     setState(() {
+  //       token = prefs.getString('authToken'); // Retrieve the token
+  //     });
+  //   } on Exception catch (e) {
+  //     displaySnackBar(context, e.toString());
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -100,11 +101,13 @@ class _AddAssignmentState extends State<AddAssignment> {
                     };
                     Dio dio = Dio();
                     try {
+                      final SharedPreferences prefs = await SharedPreferences.getInstance();
+                       token = prefs.getString('authToken');
                       dio.options.headers['content-Type'] = 'application/json';
                       if (token != null && token!.isNotEmpty) {
                         dio.options.headers["Authorization"] = "Bearer $token";
                       }
-                      Response response = await dio.post("https://a186-2404-7c00-49-e958-5468-4296-9c43-d01d.ngrok-free.app/addAssignment",data:addAssignmentJson );
+                      Response response = await dio.post(ApiConst.baseUrl+ApiConst.addAsssignmentApi,data:addAssignmentJson );
                       if (response.statusCode == 200 ||
                           response.statusCode == 201) {
                         displaySnackBar(context, addAssignmentMessageStr);
